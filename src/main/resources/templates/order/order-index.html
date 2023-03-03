@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+<main>
+    <div class="grid-container order-index">
+        <form method="get" class="filter" th:attr="action=@{/order/index}">
+            <input type="text" name="invoiceNumber" placeholder="Invoice Number..." th:attr="value=${invoiceNumber}">
+            <select name="customerId">
+                <option th:value=null>No Specific Customer</option>
+                <option th:each="option : ${customerDropdown}" th:attr="value=${option.longValue}" th:text="${option.text}"
+                        th:selected="${option.longValue == customerId}"></option>
+            </select>
+            <select name="employeeNumber">
+                <option th:value=null>No Specific Salesman</option>
+                <option th:each="option : ${salesmanDropdown}" th:attr="value=${option.stringValue}" th:text="${option.text}"
+                        th:selected="${option.longValue == employeeNumber}"></option>
+            </select>
+            <select name="deliveryId">
+                <option th:value=null>No Specific Delivery</option>
+                <option th:each="option : ${deliveryDropdown}" th:attr="value=${option.longValue}" th:text="${option.text}"
+                        th:selected="${option.longValue == deliveryId}"></option>
+            </select>
+            <input type="date" name="orderDate" th:attr="value=${orderDate}">
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+        <a class="blue-button create-button" th:href="@{/order/upsertForm}">Insert New Order</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Invoice Number</th>
+                <th>Customer</th>
+                <th>Salesman</th>
+                <th>Order Date</th>
+                <th>Delivery</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${dataGrid}">
+                <td>
+                    <a th:href="@{/order/upsertForm(invoiceNumber=${order.invoiceNumber})}" class="blue-button update-button">Edit</a>
+                    <a th:href="@{/order/delete(invoiceNumber=${order.invoiceNumber})}" class="blue-button delete-button">Delete</a>
+                    <a th:href="@{/order/detail(invoiceNumber=${order.invoiceNumber})}" class="blue-button detail-button">Invoice</a>
+                </td>
+                <td th:text="${order.invoiceNumber}"></td>
+                <td th:text="${order.customer}"></td>
+                <td th:text="${order.salesman}"></td>
+                <td th:text="${order.orderDate}"></td>
+                <td th:text="${order.delivery}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPage}|"></div>
+                        <div th:if="${totalPage != 0}">
+                            <a th:each="loop:${#numbers.sequence(1,totalPage)}"
+                               th:href="@{/order/index(page=${loop},invoiceNumber=${invoiceNumber},customerId=${customerId},employeeNumber=${employeeNumber},deliveryId=${deliveryId},orderDate=${orderDate})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}">
+</footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

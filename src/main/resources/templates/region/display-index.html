@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header ('Region Display')}"></header>
+<main>
+    <div class="grid-container">
+        <section class="header-info" th:each="row :${header}" th:object="${row}">
+            <div th:text="*{city}"></div>
+            <div th:text="*{remark}"></div>
+        </section>
+        <form method="get" class="filter" th:attr="action=@{/region/detail}">
+            <input type="hidden" name="id" th:attr="value=${headerId}">
+            <input type="text" name="employeeNumber" placeholder="Employee Number..." th:value="${employeeNumber}">
+            <input type="text" name="fullName" placeholder="Full Name..." th:value="${fullName}">
+            <select name="employeeLevel">
+                <option th:value=null>No Specific Level</option>
+                <option th:each="option : ${employeeLevelDropdown}" th:value="${option.stringValue}"
+                        th:text="${option.text}" th:selected="${option.stringValue == employeeLevel}"/>
+            </select>
+            <input type="text" name="superiorFullName" placeholder="Superior Full Name..." th:value="${superiorFullName}">
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+        <a class="blue-button create-button" th:href="@{/region/assignDetailForm(id=${headerId})}">Assign New Salesman</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Employee Number</th>
+                <th>Employee Full Name</th>
+                <th>Level</th>
+                <th>Superior Full Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row : ${dataGrid}" th:object="${row}">
+                <td>
+                    <a th:href="@{/region/deleteDetail(regionId=${headerId},employeeNumber=*{employeeNumber})}"
+                       class="blue-button delete-button">Delete</a>
+                </td>
+                <td th:text="*{employeeNumber}"></td>
+                <td th:text="*{fullName}"></td>
+                <td th:text="*{level}"></td>
+                <td th:text="*{superiorFullName}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPage}|"></div>
+                        <div th:if="${totalPage != 0}">
+                            <a th:each="loop:${#numbers.sequence(1,totalPage)}"
+                               th:href="@{/region/display(page=${loop},id=${header.id})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <a class="blue-button" th:href="@{/region/index}">Back to Region Index</a>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}">
+</footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

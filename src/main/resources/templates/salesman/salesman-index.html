@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header ('Salesman Index')}"></header>
+<main>
+    <div class="grid-container">
+        <form method="get" class="filter" th:attr="action=@{/salesman/index}">
+            <input type="text" name="employeeNumber" placeholder="Employee Number..." th:attr="value=${employeeNumber}">
+            <input type="text" name="fullName" placeholder="Full Name..." th:attr="value=${fullName}">
+            <select name="employeeLevel">
+                <option th:value=null>No Specific Level</option>
+                <option th:each="option : ${employeeLevelDropdown}" th:attr="value=${option.stringValue}"
+                        th:text="${option.text}" th:selected="${option.longValue == employeeLevel}"></option>
+            </select>
+            <input type="text" name="superiorFullName" placeholder="Superior Full Name..." th:attr="value=${superiorFullName}">
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+        <a th:href="@{/salesman/upsertForm}" class="blue-button create-button">Insert Salesman</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Employee Number</th>
+                    <th>Full Name</th>
+                    <th>Level</th>
+                    <th>Superior</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="salesman : ${dataGrid}" th:object="${salesman}">
+                    <td>
+                        <a th:href="@{/salesman/upsertForm(employeeNumber=${salesman.employeeNumber})}" class="blue-button update-button">Edit</a>
+                        <a th:href="@{/salesman/delete(employeeNumber=${salesman.employeeNumber})}" class="blue-button delete-button">Delete</a>
+                        <a th:href="@{/salesman/detail(employeeNumber=${salesman.employeeNumber})}" class="blue-button detail-button">Region</a>
+                    </td>
+                    <td th:text="*{employeeNumber}"></td>
+                    <td th:text="*{fullName}"></td>
+                    <td th:text="*{level}"></td>
+                    <td th:text="*{superiorFullName}"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:if="${totalPage != 0}">
+                            <a th:each="loop:${#numbers.sequence(1,totalPage)}"
+                               th:href="@{/salesman/index(page=${loop},employeeNumber=${employeeNumber},fullName=${fullName},employeeLevel=${employeeLevel},superiorFullName=${superiorFullName})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}">
+
+</footer>
+</body>
+</html>

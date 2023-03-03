@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Log-In</title>
+    <link rel="icon" type="image/ico" th:href="@{/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/normalize.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/site.css}">
+    <script th:src="@{/resources/js/jquery-3.6.0.js}"></script>
+</head>
+<body class="authentication-body">
+    <div class="authentication-wrapper">
+        <header th:fragment="header" class="company-logo">
+            <img th:src="@{/resources/image/logo.png}" alt="Basilisk" />
+            <h1>
+                Trade of <span class="bold">basilisk</span>
+            </h1>
+        </header>
+        <main></main>
+    </div>
+</body>
+</html>

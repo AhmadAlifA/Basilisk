@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header ('Insert Delivery')}"></header>
+<main>
+    <form class="upsert-form" th:attr="action=@{/delivery/save}" method="post" th:object="${dto}">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <table>
+            <tbody>
+            <tr>
+                <td><label>Delivery Name</label></td>
+                <td>
+                    <input type="text" th:field="*{companyName}">
+                    <div class="field-validation-error" th:errors="*{companyName}"></div>
+                    <div class="field-validation-error" th:errors="${dto}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Phone</label></td>
+                <td>
+                    <input type="text" th:field="*{phone}">
+                    <div class="field-validation-error" th:errors="*{phone}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Cost</label></td>
+                <td>
+                    <input type="text" th:field="*{cost}">
+                    <div class="field-validation-error" th:errors="*{cost}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button class="blue-button" type="submit">Submit</button>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>
